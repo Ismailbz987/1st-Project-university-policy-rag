@@ -1,0 +1,4 @@
+{"question":"How does a student request academic leave?","expected_chunk_ids":["academic_leave_policy:chunk-001"],"answerable":true}
+{"question":"What should a student do before returning to study?","expected_chunk_ids":["academic_leave_policy:chunk-002"],"answerable":true}
+{"question":"How can a student withdraw from a course before the deadline?","expected_chunk_ids":["course_withdrawal_policy:chunk-001"],"answerable":true}
+{"question":"What is today's weather?","expected_chunk_ids":[],"answerable":false}
