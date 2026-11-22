@@ -12,7 +12,7 @@ A small RAG learning project. The policy files in `data/source_documents/` are i
 
 ## Setup
 
-Requirements: Python 3.10 or newer and an OpenAI API key. API requests may incur usage charges.
+Requirements: Python 3.10 or newer and an OpenRouter API key. The configured NVIDIA chat and embedding endpoints currently have zero model charges, but free access has rate limits and availability may change. See [OpenRouter's current free-model list](https://openrouter.ai/collections/free-models) and [free endpoint limits](https://openrouter.ai/docs/limits).
 
 From this project folder, create and activate a virtual environment, then install the packages:
 
@@ -22,7 +22,9 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env`, then replace the placeholder with your API key. Keep `.env` private; it is excluded by `.gitignore`.
+Copy `.env.example` to `.env`, then replace the placeholder with your OpenRouter API key. Keep `.env` private; it is excluded by `.gitignore`.
+
+The sample policy files are invented examples. Do not send confidential documents or personal information to the configured free NVIDIA endpoint; its notice says requests may be logged and used to improve NVIDIA products and services.
 
 ## Use
 
