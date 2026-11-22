@@ -1,19 +1,57 @@
 # University Policy RAG (Learning Project)
 
-This is a small learning project. The policy files in `data/source_documents/` are invented examples and are not real university rules.
+A small RAG learning project. The policy files in `data/source_documents/` are invented examples, not real university rules.
 
-## Day 51: create source-aware chunks
+## What it does
 
-The first step reads Markdown policy files, splits their level-two sections into chunks, keeps source metadata, and writes JSON Lines to `data/processed/chunks.jsonl`.
+1. Reads Markdown policy files and splits them into source-aware chunks.
+2. Creates an embedding for each chunk and saves the vectors in a local Chroma database.
+3. Embeds a question and retrieves the closest chunks.
+4. Sends the retrieved evidence to an LLM, asks it to answer only from that evidence, and displays the source chunks.
+5. Compares retrieval results with expected chunk IDs in the evaluation set.
 
-Requirements: Python 3.10 or newer. This first step uses only Python's standard library.
+## Setup
 
-From this project folder, run:
+Requirements: Python 3.10 or newer and an OpenAI API key. API requests may incur usage charges.
+
+From this project folder, create and activate a virtual environment, then install the packages:
 
 ```powershell
-python src/ingest.py
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 ```
 
-The script reads `.md` files from `data/source_documents/`. It expects each policy section to begin with a Markdown level-two heading (`##`). It writes one JSON object per line. The sample evaluation questions are in `data/evaluation/questions.jsonl`.
+Copy `.env.example` to `.env`, then replace the placeholder with your API key. Keep `.env` private; it is excluded by `.gitignore`.
 
-This first version reads Markdown text only. PDF loading, embeddings, vector search, and answer generation will be added in later lessons.
+## Use
+
+Build or refresh the local vector index after changing source documents:
+
+```powershell
+python src/rag.py --build
+```
+
+Ask one question using the saved index:
+
+```powershell
+python src/rag.py
+```
+
+Check whether retrieval finds the expected evidence chunks:
+
+```powershell
+python src/rag.py --evaluate
+```
+
+The Chroma database is stored in `data/chroma/`. The prepared JSONL chunks are stored in `data/processed/`. Both are generated locally and are excluded from Git.
+
+## Limitations
+
+- This baseline uses vector search only. It does not yet use BM25, hybrid search, RRF, or a cross-encoder reranker.
+- The sample policy files are short and synthetic.
+- The LLM is instructed to abstain when the context is insufficient, but this prompt alone cannot guarantee that it will always abstain or cite correctly.
+- Retrieval evaluation compares chunk IDs. It does not by itself measure answer correctness.
+- The code re-creates chunk embeddings when `--build` is run. Repeated builds use API requests.
+
+This project starts with a transparent baseline. Later lessons will improve it with LangChain and more systematic evaluation.
